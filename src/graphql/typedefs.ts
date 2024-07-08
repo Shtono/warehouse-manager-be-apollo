@@ -12,7 +12,7 @@ export const typeDefs = `#graphql
 #        ✅ MovementLog
         movement_log(id: ID!): MovementLog
         movement_logs: [MovementLog!]!
-#        ✅ Container
+#        ✅ Contai
         container(id: ID!): Container
         containers: [Container!]!
     }
