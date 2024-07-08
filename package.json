@@ -6,10 +6,6 @@
     "license": "MIT",
     "type": "commonjs",
     "scripts": {
-        "start:dev": "ts-node-dev src/index.ts",
-        "start:prod": "node index.ts",
-        "compile": "tsc",
-        "start": "npm run compile && node ./dist/index.js",
         "start:nodemon": "nodemon --exec ts-node-dev src/index.ts"
     },
     "dependencies": {
