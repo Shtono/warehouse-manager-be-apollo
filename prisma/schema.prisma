@@ -1,0 +1,188 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+generator pothos {
+  provider = "prisma-pothos-types"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum MovementType {
+  IN
+  OUT
+}
+
+enum ContainerState {
+  ACTIVE
+  ARCHIVED
+}
+
+model Customer {
+  id        Int      @id @default(autoincrement())
+  name      String
+  email     String
+  phone     String
+  warehouses Warehouse[]
+  products   Product[]
+  movementLogs MovementLog[]
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt @default(now())
+}
+
+model Warehouse {
+  id        Int     @id @default(autoincrement())
+  name      String
+  location  String
+  capacity  Float
+  current_capacity Float @default(0)
+  hazardous Boolean
+  // products  Product[]
+  customer_id Int
+  customer  Customer @relation(fields: [customer_id], references: [id])
+  movement_logs MovementLog[]
+  containers Container[]
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt @default(now())
+}
+
+model Product {
+  id          Int       @id @default(autoincrement())
+  name        String
+  description String
+  price       Float
+  size        Float
+  hazardous   Boolean
+  containers  Container[]
+  customer_id Int
+  customer    Customer @relation(fields: [customer_id], references: [id])
+  created_at  DateTime  @default(now())
+  updated_at  DateTime  @updatedAt @default(now())
+}
+
+model Container {
+  id          Int      @id @default(autoincrement())
+  quantity    Int
+  size        Float
+  state       ContainerState @default(ACTIVE)
+  product_id  Int
+  product     Product  @relation(fields: [product_id], references: [id])
+  warehouse_id Int
+  warehouse   Warehouse @relation(fields: [warehouse_id], references: [id])
+  movement_logs MovementLog[]
+  created_at   DateTime @default(now())
+}
+
+model MovementLog {
+  id          Int      @id @default(autoincrement())
+  description String
+  quantity    Int
+  warehouse_current_capacity Float @default(0)
+  movement_type    MovementType @default(IN)
+  container_id Int @default(1)
+  container   Container  @relation(fields: [container_id], references: [id])
+  warehouse_id Int
+  warehouse   Warehouse @relation(fields: [warehouse_id], references: [id])
+  customer_id Int
+  customer     Customer @relation(fields: [customer_id], references: [id])
+  created_at   DateTime @default(now())
+  updated_at   DateTime @updatedAt @default(now())
+}
+
+
+
+// // This is your Prisma schema file,
+// // learn more about it in the docs: https://pris.ly/d/prisma-schema
+//
+// // Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// // Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+//
+// generator client {
+//   provider = "prisma-client-js"
+// }
+//
+// generator pothos {
+//   provider = "prisma-pothos-types"
+// }
+//
+// datasource db {
+//   provider = "postgresql"
+//   url      = env("DATABASE_URL")
+// }
+//
+// enum MovementType {
+//   IN
+//   OUT
+// }
+//
+// model Customer {
+//   id        Int      @id @default(autoincrement())
+//   name      String
+//   email     String
+//   phone     String
+//   warehouses Warehouse[]
+//   created_at DateTime @default(now())
+//   updated_at DateTime @updatedAt
+// }
+//
+// model Warehouse {
+//   id        Int     @id @default(autoincrement())
+//   name      String
+//   location  String
+//   capacity  Int
+//   current_capacity Int
+//   hazardous Boolean
+//   // products  Product[]
+//   customer_id Int
+//   customer  Customer @relation(fields: [customer_id], references: [id])
+//   movement_logs MovementLog[]
+//   containers Container[]
+//   created_at DateTime @default(now())
+//   updated_at DateTime @updatedAt
+// }
+//
+// model Product {
+//   id          Int       @id @default(autoincrement())
+//   name        String
+//   description String
+//   price       Float
+//   size        Int
+//   hazardous   Boolean
+//   containers   Container[]
+//   movement_logs MovementLog[]
+//   created_at   DateTime  @default(now())
+//   updated_at   DateTime  @updatedAt
+// }
+//
+// model Container {
+//   id          Int      @id @default(autoincrement())
+//   quantity    Int
+//   size        Int
+//   product_id  Int
+//   product     Product  @relation(fields: [product_id], references: [id])
+//   warehouse_id Int
+//   warehouse   Warehouse @relation(fields: [warehouse_id], references: [id])
+//   created_at   DateTime @default(now())
+// }
+//
+// model MovementLog {
+//   id          Int      @id @default(autoincrement())
+//   description String
+//   quantity    Int
+//   movement_type    MovementType
+//   product_id   Int
+//   product     Product  @relation(fields: [product_id], references: [id])
+//   warehouse_id Int
+//   warehouse   Warehouse @relation(fields: [warehouse_id], references: [id])
+//   created_at   DateTime @default(now())
+//   updated_at   DateTime @updatedAt
+// }

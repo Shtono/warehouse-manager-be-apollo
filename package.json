@@ -1,0 +1,41 @@
+{
+    "version": "1.0.0",
+    "description": "GraphQL API for warehouse management",
+    "name": "warehouse-be",
+    "main": "index.js",
+    "license": "MIT",
+    "type": "commonjs",
+    "scripts": {
+        "start:dev": "ts-node-dev src/index.ts",
+        "start:prod": "node index.ts",
+        "compile": "tsc",
+        "start": "npm run compile && node ./dist/index.js",
+        "start:nodemon": "nodemon --exec ts-node-dev src/index.ts"
+    },
+    "dependencies": {
+        "@apollo/server": "^4.10.4",
+        "@pothos/core": "^3.41.2",
+        "@pothos/plugin-errors": "^3.11.2",
+        "@pothos/plugin-prisma": "^3.65.3",
+        "@prisma/client": "5.16.1",
+        "axios": "^1.7.2",
+        "graphql": "^16.9.0",
+        "graphql-scalars": "^1.23.0",
+        "prisma": "^5.16.1"
+    },
+    "devDependencies": {
+        "@types/node": "^20.14.9",
+        "@typescript-eslint/eslint-plugin": "^5.27.1",
+        "@typescript-eslint/parser": "^5.27.1",
+        "eslint": "^8.17.0",
+        "eslint-config-airbnb": "^19.0.4",
+        "eslint-config-airbnb-base": "^15.0.0",
+        "eslint-config-prettier": "^8.5.0",
+        "eslint-plugin-import": "^2.26.0",
+        "eslint-plugin-prettier": "^4.0.0",
+        "nodemon": "^3.1.4",
+        "prettier": "^2.6.2",
+        "ts-node-dev": "^2.0.0",
+        "typescript": "^5.5.3"
+    }
+}
